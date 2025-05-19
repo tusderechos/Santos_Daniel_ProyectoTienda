@@ -243,11 +243,21 @@ public class Santos_Daniel_ProyectoTienda {
                             }
                             
                             //Aqui se le pregunta el usuario si quiere hacer otra venta, y si dice que si, entonces se repite el proceso de Ventas
-                            System.out.print("Quiere hacer otra venta? (si/no): ");
-                            String sino = scanner.next().toLowerCase();
-                            if (sino.equals("no")) {
-                                OtraVenta = false;
+                            boolean RespuestaValida = false;
+                            while(!RespuestaValida) {
+                                System.out.print("Quiere hacer otra venta? (si/no): ");
+                                String sino = scanner.next().toLowerCase();
+                                if (sino.equals("no") || sino.equals("n")) {
+                                    OtraVenta = false;
+                                    RespuestaValida = true;
+                                } else if (sino.equals("si") || sino.equals("s")){
+                                    OtraVenta = true;
+                                    RespuestaValida = true;
+                                } else {
+                                    System.out.println("Eso no es permitido, por favor ingrese si o no.");
+                                }
                             }
+                            
                         }
 
                         //Parte pa calcular el descuento, el impuesto y el total para pagar
@@ -646,7 +656,24 @@ public class Santos_Daniel_ProyectoTienda {
                     
                 case 6:
                     //Parte de Salir del sistema
-                    System.out.println("Saliendo del sistema...");
+                    boolean ConfirmacionValida = false;
+                    
+                    while(!ConfirmacionValida) {
+                        System.out.println("Esta seguro de que quiere salir del sistema?");
+                        String sino = scanner.next().toLowerCase();
+                        
+                        if (sino.equals("no") || sino.equals("n")) {
+                            System.out.println("Regresando al menu principal...");
+                            Opcion = 0;
+                            ConfirmacionValida = true;
+                        } else if (sino.equals("si") || sino.equals("s")) {
+                            System.out.println("Saliendo del sistema...");
+                            ConfirmacionValida = true;
+                            break;
+                        } else {
+                            System.out.println("Eso no es permitido, porfavor eliga una opcion entre si o no");
+                        }
+                    }
                     break;
                     
                 default:
