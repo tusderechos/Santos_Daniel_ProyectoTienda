@@ -13,9 +13,9 @@ import java.util.Scanner;
 
 public class Santos_Daniel_ProyectoTienda {
     
-    
+    //Aqui se definen las variables globales, o variables que voy a estar usando constantemente alrededo de todo el programa
     static double Caja = 0.00;
-    static double Limite_Caja = 20000.00;
+    static double Limite_Caja = 20000.00; //Este limite existe porque en mi cabeza si uno simplemente decide poner un millon de lempiras en la Caja, ya no tiene sentido que siga con la tienda
     static int Codigo_producto = 0;
     static int NumeroVentas = 0;
     static int NumeroCompras = 0;
@@ -59,7 +59,9 @@ public class Santos_Daniel_ProyectoTienda {
         double PrecioMaiz_compra = 18.0;
         int CantidadMaiz = 0;
             
+        //Aqui inicia todo el programa
         do {    
+            //El menu principal en todo su esplendor
             System.out.println("\r                                                                                                                                                                          ");
             System.out.println("**** Menu Principal ****");
             System.out.println("1. Abrir Caja");
@@ -89,9 +91,9 @@ public class Santos_Daniel_ProyectoTienda {
                             System.out.println("Esta cantidad excede el limite impuesto a la caja, el limite es de: Lps. " + Limite_Caja);
                         } else {
                             Caja += DineroCaja;
-                            Caja = Math.round(Caja * 100.0) / 100.0;
+                            Caja = Math.round(Caja * 100.0) / 100.0; //Lo uso para poder redondear los decimales del dinero en la caja a dos digitos, ej: Caja: Lps. 100.58294 -> 100.58.
                             System.out.println("Caja abierta con Lps. " + String.format("%.2f", Caja));
-                            CajaAbierta = true;
+                            CajaAbierta = true; //Esto es solo para que el resto del programa sepa que si se abrio la Caja
                         }
                     } else {
                         System.out.println("La caja ya esta abierta con: Lps. " + String.format("%.2f", Caja));
@@ -107,7 +109,7 @@ public class Santos_Daniel_ProyectoTienda {
                     } else if (CajaCerrada) {
                         System.out.println("No se puede hacer ninguna venta si la caja esta cerrada!");
                         break;
-                    } else if (CantidadAzucar <= 0 && CantidadAvena <= 0 && CantidadTrigo <= 0 && CantidadMaiz <= 0) {
+                    } else if (CantidadAzucar <= 0 && CantidadAvena <= 0 && CantidadTrigo <= 0 && CantidadMaiz <= 0) { //Aqui solamente permito que el cliente haga Ventas si hay una cantidad x de cualquier producto
                         System.out.println("Tiene que hacer una Compra a algun proveedor para poder hacer una Venta!");
                         break;
                     } else {
@@ -164,7 +166,9 @@ public class Santos_Daniel_ProyectoTienda {
 
                             int CantidadCompra = 0;
                             
+                            //Estuve como 3 dias con un error en este while y hoy Domingo, a las 9:24 p.m., porfin lo arregle
                             while (!CodigoValido) {
+                                //Un while para pedir el codigo de producto y la cantidad de kilogramos a comprar, y partes de codigo por si el cliente no ingresa cosas validas
                                 System.out.print("Ingrese el codigo del producto que quiere vender (1, 2, 3, 4): ");
                                 Codigo_producto = scanner.nextInt();
                                 
@@ -174,7 +178,6 @@ public class Santos_Daniel_ProyectoTienda {
                                 }
 
                                 if ((Tipo_cliente.equals("A")) || (Tipo_cliente.equals("B") && (Codigo_producto == 1 || Codigo_producto == 2 || Codigo_producto == 3)) || (Tipo_cliente.equals("C") && Codigo_producto == 4)) {
-                                    
                                     System.out.print("Ingrese la cantidad de kilogramos del producto que desea vender: ");
                                     CantidadCompra = scanner.nextInt();
 
@@ -238,7 +241,8 @@ public class Santos_Daniel_ProyectoTienda {
                                     System.out.println("Codigo de producto no valido.");
                                     continue;
                             }
-
+                            
+                            //Aqui se le pregunta el usuario si quiere hacer otra venta, y si dice que si, entonces se repite el proceso de Ventas
                             System.out.print("Quiere hacer otra venta? (si/no): ");
                             String sino = scanner.next().toLowerCase();
                             if (sino.equals("no")) {
@@ -249,25 +253,29 @@ public class Santos_Daniel_ProyectoTienda {
                         //Parte pa calcular el descuento, el impuesto y el total para pagar
                         double Descuento = 0;
 
+                        //Aqui se calcula el descuento
                         if (TotalVentaCliente >= 5000) {
                             Descuento = TotalVentaCliente * 0.10;
                         } else if (TotalVentaCliente >= 1000) {
                             Descuento = TotalVentaCliente * 0.05;
                         }
 
+                        //Aqui se calcula el impuesto y el total a pagar
                         double Impuesto = (TotalVentaCliente - Descuento) * 0.07;
                         double TotalPagar = (TotalVentaCliente - Descuento) + Impuesto;
 
                         if (TotalPagar > 0) {
-                            Caja += TotalPagar;
+                            Caja += TotalPagar; //Se le suma el total a pagar a la Caja
                             Caja = Math.round(Caja * 100.0) / 100.0; //Lo uso para poder redondear los decimales del dinero en la caja a dos digitos, ej: Caja: Lps. 100.58294 -> 100.58.
-                            TotalVentas += TotalVentaCliente;
+                            TotalVentas += TotalVentaCliente; //Se suma el total de la venta actual del cliente al total global de Ventas
                             NumeroVentas++;
+                            //De aqui saco el total de x producto vendido para la facturacion de Ventas
                             CantidadAzucarVendida += TotalCantidadAzucar;
                             CantidadAvenaVendida += TotalCantidadAvena;
                             CantidadTrigoVendida += TotalCantidadTrigo;
                             CantidadMaizVendida += TotalCantidadMaiz;
 
+                            //Aqui digo que si la ganancia de la venta actual del cliente es mayor a la ganancia maxima global de una venta, que la ganancia maima se reemplaze por la ganancia de la venta actual
                             if (GananciaVentaCliente > MaxVentaGanancia) {
                                 MaxVentaGanancia = GananciaVentaCliente;
                             }
@@ -318,6 +326,7 @@ public class Santos_Daniel_ProyectoTienda {
                         boolean ProveedorValido = false;
                         boolean CompraValida = false;
                         
+                        //Magica lista de proveedores en todo su esplendor
                         System.out.println("\r                                                                                                                                                              ");
                         System.out.println("-------------------------------------------------------------------------");
                         System.out.println("|                          Lista de Proveedores                         |");
@@ -335,7 +344,7 @@ public class Santos_Daniel_ProyectoTienda {
                             Tipo_proveedor = scanner.next().toUpperCase();
 
                             
-
+                            //Menus para cada tipo de proveedor
                             switch(Tipo_proveedor) {
                                 case "A":
                                     System.out.println("\r                                                                                                                                                      ");
@@ -394,6 +403,7 @@ public class Santos_Daniel_ProyectoTienda {
 
                         }
 
+                        //Un while igual al de Ventas, donde se pide el codigo de producto y la cantidad de kilogramos a comprar, y bloques de codigo para evitar algun error
                         while(!CompraValida) {
                             System.out.println("Ingrese el codigo del producto que quiere comprar: ");
                             Codigo_producto = scanner.nextInt();
@@ -447,13 +457,14 @@ public class Santos_Daniel_ProyectoTienda {
                         }
                         
                         if (TotalCompra > 0) {
-                            Caja -= TotalCompra;
+                            Caja -= TotalCompra; //Se resta el total de la compra actual del cliente directamente a la Caja
                             Caja = Math.round(Caja * 100.0) / 100.0; //Lo uso para poder redondear los decimales del dinero en la caja a dos digitos, ej: Caja: Lps. 100.58294 -> 100.58.
-                            TotalCompras += TotalCompra;
+                            TotalCompras += TotalCompra; //Se suma el total de la compra actual al total global de Compras
                             NumeroCompras++;
                             
                             double GastosCompras = 0.00;
                             
+                            //Aqui se calcula el Gasto de la compra actual del cliente
                             if (Codigo_producto == 1) {
                                 GastosCompras = PrecioAzucar_compra * CantidadCompra;
                             } else if (Codigo_producto == 2) {
@@ -468,6 +479,7 @@ public class Santos_Daniel_ProyectoTienda {
                                 GastosCompras = PrecioMaiz_compra * CantidadCompra;
                             }
                             
+                            //Y aqui dice que si el total del gasto de la compra actual es mayor al total global del gasto de Compras, que lo reemplaze
                             if (GastosCompras > MaxCompraGasto) {
                                 MaxCompraGasto = GastosCompras;
                             }
@@ -512,7 +524,7 @@ public class Santos_Daniel_ProyectoTienda {
                         System.out.println("\r                                                                                                                                              ");
                         
                         System.out.println("**** Ganancia Neta de Ventas/Compras ****");
-                        //if que funciona solamente cuando se haya hecho una venta/compra correctamente, y muestra el volumen total de compras y ventas, pero si no ha hecho nada, va a mostrar que no hay volumen para mostrar
+                        //if que funciona solamente cuando se haya hecho una venta/compra correctamente, y muestra la ganancia neta entre el total de las ventas menos el total de las compras
                         if (NumeroCompras > 0 || NumeroVentas > 0) {
                             System.out.println("Ganancia Neta: Lps. " + String.format("%.2f", (TotalVentas - TotalCompras)));
                         } else {
@@ -599,6 +611,7 @@ public class Santos_Daniel_ProyectoTienda {
                             Porcentaje = scanner.nextInt();
                         }
                         
+                        //Aqui se calcula la cantidad de dinero que va a ir al banco y la cantidad que se va a quedar en la caja
                         double DineroalBanco = Caja * (Porcentaje / 100.0);
                         double DineroenCaja = Caja - DineroalBanco;
                         
@@ -608,9 +621,10 @@ public class Santos_Daniel_ProyectoTienda {
                         System.out.println("Dinero transferido al Banco (" + Porcentaje + "%): Lps. " + String.format("%.2f", DineroalBanco));
                         System.out.println("Dinero restante en la Caja: Lps. " + String.format("%.2f", DineroenCaja));
                         
-                        Caja = DineroenCaja;
+                        Caja = DineroenCaja; //Aqui se reemplaza la cantidad de lo que hay en la caja con la cantidad de dinero que deberia de haber despues de mandar dinero al banco
                         Caja = Math.round(Caja * 100.0) / 100.0; //Lo uso para poder redondear los decimales del dinero en la caja a dos digitos, ej: Caja: Lps. 100.58294 -> 100.58.
                         
+                        //Aqui se reemplazan todas las cantidades globales a 0 para que no se sumen las cantidades de lo que se hizo en un dia al siguiente dia
                         NumeroVentas = 0;
                         NumeroCompras = 0;
                         TotalVentas = 0.00;
@@ -624,7 +638,7 @@ public class Santos_Daniel_ProyectoTienda {
                         
                         System.out.println("\r                                                                                                                           ");
                         System.out.println("El cierre de Caja ha sido realizado. El dia ha terminado exitosamente.");
-                        CajaAbierta = false;
+                        CajaAbierta = false; //Aqui ya se oficializa el cierre de caja y no se podra hacer nada mas hasta que se vuelva a abrir la caja, marcando un siguiente dia 
                     }
                     
                     
